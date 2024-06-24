@@ -1,39 +1,26 @@
+from contextlib import asynccontextmanager
+
 import uvicorn
+from fastapi import FastAPI
 
-from fastapi import FastAPI, Body
-from pydantic import BaseModel, EmailStr
+from api.v1 import router as router_v1
 
-
-class CreateUserM(BaseModel):
-    email: EmailStr
+from core.models import global_init
 
 
-app = FastAPI(
-    title='Todos',
-    version='0.0.1'
-)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await global_init()
+    yield
 
-items = ['item1', 'item2', 'item3']
+
+app = FastAPI(title='Todos', version='0.0.1', lifespan=lifespan)
+app.include_router(router_v1)
 
 
 @app.get('/')
 async def index():
     return {'msg': 'hello world'}
-
-
-@app.get('/items')
-async def list_items():
-    return items
-
-
-@app.post('/user')
-async def create_user(user: CreateUserM):
-    return user.email
-
-
-@app.get('/items/{item_id}')
-async def get_item_by_id(item_id: int):
-    return items[item_id]
 
 
 if __name__ == '__main__':
