@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "todo-lina"
+version = "0.1.0"
+description = "API for application that provides TODO lists for users"
+authors = ["cxrsedhappy <cxrsedhappy@mail.ru>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "todo"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.111.0"
+SQLAlchemy = "^2.0.31"
+uvicorn = "^0.30.1"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
