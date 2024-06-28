@@ -4,6 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from api.v1 import router as router_v1
+from api.auth import router as router_auth
 
 from core.models import global_init
 
@@ -16,6 +17,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title='Todos', version='0.0.1', lifespan=lifespan)
 app.include_router(router_v1)
+app.include_router(router_auth)
 
 
 @app.get('/')

@@ -9,13 +9,19 @@ from pydantic import BaseModel, ConfigDict, EmailStr
 class UserM(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
-    name: str
-    password: Annotated[str, MinLen(6), MaxLen(18)]
+    username: str
+    hashed_password: str
     email: EmailStr
+    is_email_verified: bool
     created: datetime.datetime
 
 
 class UserCreateM(BaseModel):
-    name: str
+    username: str
     password: Annotated[str, MinLen(6), MaxLen(18)]
     email: EmailStr
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str

@@ -5,11 +5,21 @@ from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import User
+from api.auth import bcrypt_context
 from .schemas import UserCreateM
 
 
 async def create_user(session: AsyncSession, _user: UserCreateM):
-    user = User(**_user.model_dump())
+    """
+    Creates a new User.
+
+    :param session: AsyncSession
+    :param _user: UserCreateM
+    :return: User object
+    """
+    dump = _user.model_dump()
+    dump['password'] = bcrypt_context.hash(dump['password'])
+    user = User(**dump)
     session.add(user)
     await session.commit()
     await session.refresh(user)
