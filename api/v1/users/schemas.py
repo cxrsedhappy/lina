@@ -22,6 +22,6 @@ class UserCreateM(BaseModel):
     email: EmailStr
 
 
-class Token(BaseModel):
+class TokenM(BaseModel):
     access_token: str
     token_type: str

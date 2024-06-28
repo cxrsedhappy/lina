@@ -1,13 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from . import crud
-from .schemas import UserCreateM, UserM
 from core.models import create_session
 
-router = APIRouter(tags=['Users'])
+from .auth import get_current_user
+from .schemas import UserCreateM, UserM
+from . import crud
+
+router = APIRouter(prefix='/user', tags=['Users'])
 
 
-@router.post('', response_model=UserM)
+@router.post('', status_code=status.HTTP_201_CREATED, response_model=UserM)
 async def create_users(user: UserCreateM, session=Depends(create_session)):
     return await crud.create_user(session, user)
 
@@ -15,6 +17,11 @@ async def create_users(user: UserCreateM, session=Depends(create_session)):
 @router.get('', response_model=list[UserM])
 async def get_users(session=Depends(create_session)):
     return await crud.get_users(session)
+
+
+@router.get('/me', response_model=UserM)
+async def get_me(user=Depends(get_current_user), session=Depends(create_session)):
+    return await crud.get_users_by_id(session, user['id'])
 
 
 @router.get('/{user_id}', response_model=UserM)

@@ -5,8 +5,8 @@ from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import User
-from api.auth import bcrypt_context
 from .schemas import UserCreateM
+from .utils import bcrypt_context
 
 
 async def create_user(session: AsyncSession, _user: UserCreateM):
