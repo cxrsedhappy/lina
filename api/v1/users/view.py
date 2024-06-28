@@ -29,9 +29,6 @@ async def get_user(user_id: int, session=Depends(create_session)):
     user = await crud.get_users_by_id(session, user_id)
 
     if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'User id:{user_id} not found'
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'User with id <{user_id}> not found')
 
     return user

@@ -11,7 +11,7 @@ from .utils import bcrypt_context
 
 async def create_user(session: AsyncSession, _user: UserCreateM):
     """
-    Creates a new User.
+    Creates a new User with hashed password.
 
     :param session: AsyncSession
     :param _user: UserCreateM
@@ -27,6 +27,12 @@ async def create_user(session: AsyncSession, _user: UserCreateM):
 
 
 async def get_users(session: AsyncSession) -> Sequence[User]:
+    """
+    Returns all Users in database
+
+    :param session: AsyncSession
+    :return: User object
+    """
     statement = select(User).order_by(User.id)
     result: Result = await session.execute(statement)
     users = result.scalars().all()
@@ -34,4 +40,11 @@ async def get_users(session: AsyncSession) -> Sequence[User]:
 
 
 async def get_users_by_id(session: AsyncSession, user_id) -> User | None:
+    """
+    Finds User by passed user_id
+
+    :param session: AsyncSession
+    :param user_id: int
+    :return: User object
+    """
     return await session.get(User, user_id)

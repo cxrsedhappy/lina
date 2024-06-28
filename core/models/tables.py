@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-import datetime
-
+from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .database import Base
@@ -14,7 +13,7 @@ class User(Base):
     hashed_password: Mapped[str] = mapped_column(nullable=False)
     email: Mapped[str] = mapped_column(nullable=False)
     is_email_verified: Mapped[bool] = mapped_column(default=False)
-    created: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.utcnow())
+    created: Mapped[datetime] = mapped_column(default=datetime.utcnow())
 
     def __init__(self, username, password, email, **kwargs):
         self.username = kwargs.get('username', username)
